@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
 
 public class NoteActivity extends AppCompatActivity {
 
@@ -13,6 +14,8 @@ public class NoteActivity extends AppCompatActivity {
     setContentView(R.layout.activity_note);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    Spinner spinner = findViewById(R.id.spinner_courses);
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
