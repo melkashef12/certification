@@ -6,6 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -21,5 +24,17 @@ public class NoteListActivity extends AppCompatActivity {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
       }
     });
+
+
+    initializeDisplayContent();
+  }
+
+  private void initializeDisplayContent() {
+    ListView listNotes = findViewById(R.id.list_notes);
+
+    List<NoteInfo> notes = DataManager.getInstance().getNotes();
+
+    ArrayAdapter<NoteInfo> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,notes );
+    listNotes.setAdapter(adapter);
   }
 }
