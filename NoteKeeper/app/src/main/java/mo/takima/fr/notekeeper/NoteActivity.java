@@ -11,6 +11,8 @@ import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
 
+  public static final String NOTE_INFO = "mo.takima.fr.NOTE_INFO";
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_note);

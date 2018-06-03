@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
 
+import static mo.takima.fr.notekeeper.NoteActivity.NOTE_INFO;
+
 public class NoteListActivity extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class NoteListActivity extends AppCompatActivity {
   }
 
   private void initializeDisplayContent() {
-    ListView listNotes = findViewById(R.id.list_notes);
+    final ListView listNotes = findViewById(R.id.list_notes);
 
     List<NoteInfo> notes = DataManager.getInstance().getNotes();
 
@@ -40,8 +42,12 @@ public class NoteListActivity extends AppCompatActivity {
     listNotes.setAdapter(adapter);
 
     listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+      @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Intent intent = new Intent(NoteListActivity.this, NoteActivity.class);
+
+        NoteInfo noteInfo = (NoteInfo) listNotes.getItemAtPosition(position);
+        intent.putExtra(NOTE_INFO,noteInfo);
+
         startActivity(intent);
       }
     });
