@@ -15,6 +15,7 @@ public class NoteActivity extends AppCompatActivity {
 
   public static final String NOTE_INFO = "mo.takima.fr.NOTE_INFO";
   private NoteInfo mNote;
+  private boolean mIsNewNote;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -34,16 +35,19 @@ public class NoteActivity extends AppCompatActivity {
     EditText textNoteTitle = findViewById(R.id.text_note_title);
     EditText textNoteText = findViewById(R.id.text_note_text);
 
-    displayNote(spinner,textNoteTitle,textNoteText);
+    if(!mIsNewNote){
+      displaySelectedNote(spinner,textNoteTitle,textNoteText);
+    }
   }
 
 
   private void readDisplayStateValues() {
     Intent intent = getIntent();
     mNote = intent.getParcelableExtra(NOTE_INFO);
+    mIsNewNote = mNote == null;
   }
 
-  private void displayNote(Spinner spinner, EditText textNoteTitle, EditText textNoteText) {
+  private void displaySelectedNote(Spinner spinner, EditText textNoteTitle, EditText textNoteText) {
     selectNoteInSpinner(spinner);
     textNoteTitle.setText(mNote.getTitle());
     textNoteText.setText(mNote.getText());
