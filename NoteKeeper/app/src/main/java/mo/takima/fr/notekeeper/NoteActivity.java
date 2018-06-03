@@ -1,17 +1,20 @@
 package mo.takima.fr.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
 
   public static final String NOTE_INFO = "mo.takima.fr.NOTE_INFO";
+  private NoteInfo mNote;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -25,6 +28,31 @@ public class NoteActivity extends AppCompatActivity {
     ArrayAdapter<CourseInfo> adapterCourses = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,courses);
     adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     spinner.setAdapter(adapterCourses);
+
+    readDisplayStateValues();
+
+    EditText textNoteTitle = findViewById(R.id.text_note_title);
+    EditText textNoteText = findViewById(R.id.text_note_text);
+
+    displayNote(spinner,textNoteTitle,textNoteText);
+  }
+
+
+  private void readDisplayStateValues() {
+    Intent intent = getIntent();
+    mNote = intent.getParcelableExtra(NOTE_INFO);
+  }
+
+  private void displayNote(Spinner spinner, EditText textNoteTitle, EditText textNoteText) {
+    selectNoteInSpinner(spinner);
+    textNoteTitle.setText(mNote.getTitle());
+    textNoteText.setText(mNote.getText());
+  }
+
+  private void selectNoteInSpinner(Spinner spinner) {
+    List<CourseInfo> courses = DataManager.getInstance().getCourses();
+    int index = courses.indexOf(mNote.getCourse());
+    spinner.setSelection(index);
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
