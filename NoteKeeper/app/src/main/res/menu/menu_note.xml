@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="mo.takima.fr.notekeeper.NoteActivity">
   <item
+      android:id="@+id/action_cancel"
+      android:title="Cancel"/>
+  <item
       android:id="@+id/action_send_mail"
       android:orderInCategory="100"
       android:title="Send an email"
