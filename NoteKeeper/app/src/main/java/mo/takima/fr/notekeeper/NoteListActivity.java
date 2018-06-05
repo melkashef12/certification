@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
 
-import static mo.takima.fr.notekeeper.NoteActivity.NOTE_INFO;
+import static mo.takima.fr.notekeeper.NoteActivity.NOTE_POSITION;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -44,8 +44,8 @@ public class NoteListActivity extends AppCompatActivity {
       @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Intent intent = new Intent(NoteListActivity.this, NoteActivity.class);
 
-        NoteInfo noteInfo = (NoteInfo) listNotes.getItemAtPosition(position);
-        intent.putExtra(NOTE_INFO,noteInfo);
+        //NoteInfo noteInfo = (NoteInfo) listNotes.getItemAtPosition(position);
+        intent.putExtra(NOTE_POSITION,position);
 
         startActivity(intent);
       }
