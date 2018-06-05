@@ -19,8 +19,9 @@ public class NoteActivity extends AppCompatActivity {
   private NoteInfo mNote;
   private boolean mIsNewNote;
   private Spinner mSpinner;
-  private EditText mTtextNoteTitle;
+  private EditText mTextNoteTitle;
   private EditText mTextNoteText;
+  private int mNotePosition;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -37,11 +38,11 @@ public class NoteActivity extends AppCompatActivity {
 
     readDisplayStateValues();
 
-    mTtextNoteTitle = findViewById(R.id.text_note_title);
+    mTextNoteTitle = findViewById(R.id.text_note_title);
     mTextNoteText = findViewById(R.id.text_note_text);
 
     if(!mIsNewNote){
-      displaySelectedNote(mSpinner, mTtextNoteTitle, mTextNoteText);
+      displaySelectedNote(mSpinner, mTextNoteTitle, mTextNoteText);
     }
   }
 
@@ -50,7 +51,9 @@ public class NoteActivity extends AppCompatActivity {
     Intent intent = getIntent();
     int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
     mIsNewNote = position == POSITION_NOT_SET;
-    if(!mIsNewNote) {
+    if(mIsNewNote) {
+      createNewNote();
+    } else {
       mNote = DataManager.getInstance().getNotes().get(position);
     }
   }
@@ -88,9 +91,14 @@ public class NoteActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  @Override protected void onPause() {
+    super.onPause();
+    saveNote();
+  }
+
   private void sendEmail() {
       CourseInfo course = (CourseInfo) mSpinner.getSelectedItem();
-      String subject = mTtextNoteTitle.getText().toString();
+      String subject = mTextNoteTitle.getText().toString();
       String body = "Checkout what I learned in the Pluralsight course \""+
           course.getTitle()+"\"\n" + mTextNoteText.getText().toString();
 
@@ -99,6 +107,18 @@ public class NoteActivity extends AppCompatActivity {
       intent.putExtra(Intent.EXTRA_SUBJECT,subject);
       intent.putExtra(Intent.EXTRA_TEXT,body);
       startActivity(intent);
+  }
 
+  private void saveNote() {
+      mNote.setCourse((CourseInfo) mSpinner.getSelectedItem());
+      mNote.setTitle(mTextNoteTitle.getText().toString());
+      mNote.setText(mTextNoteText.getText().toString());
+  }
+
+
+  private void createNewNote() {
+    DataManager dm = DataManager.getInstance();
+    mNotePosition = dm.createNewNote();
+    mNote = dm.getNotes().get(mNotePosition);
   }
 }
