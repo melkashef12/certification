@@ -15,6 +15,8 @@ import static mo.takima.fr.notekeeper.NoteActivity.NOTE_POSITION;
 
 public class NoteListActivity extends AppCompatActivity {
 
+  private ArrayAdapter<NoteInfo> mAdapter;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_note_list);
@@ -32,13 +34,18 @@ public class NoteListActivity extends AppCompatActivity {
     initializeDisplayContent();
   }
 
+  @Override protected void onResume() {
+    super.onResume();
+    mAdapter.notifyDataSetChanged();
+  }
+
   private void initializeDisplayContent() {
     final ListView listNotes = findViewById(R.id.list_notes);
 
     List<NoteInfo> notes = DataManager.getInstance().getNotes();
 
-    ArrayAdapter<NoteInfo> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,notes );
-    listNotes.setAdapter(adapter);
+    mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,notes );
+    listNotes.setAdapter(mAdapter);
 
     listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
