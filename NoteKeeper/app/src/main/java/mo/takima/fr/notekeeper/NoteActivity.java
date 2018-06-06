@@ -23,6 +23,9 @@ public class NoteActivity extends AppCompatActivity {
   private EditText mTextNoteText;
   private int mNotePosition;
   private boolean mIsCanceling;
+  private String mOriginalCourseId;
+  private String mOriginalTitle;
+  private String mOriginalText;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class NoteActivity extends AppCompatActivity {
     mSpinner.setAdapter(adapterCourses);
 
     readDisplayStateValues();
+    saveOriginalNoteValues();
 
     mTextNoteTitle = findViewById(R.id.text_note_title);
     mTextNoteText = findViewById(R.id.text_note_text);
@@ -46,7 +50,6 @@ public class NoteActivity extends AppCompatActivity {
       displaySelectedNote(mSpinner, mTextNoteTitle, mTextNoteText);
     }
   }
-
 
   private void readDisplayStateValues() {
     Intent intent = getIntent();
@@ -57,6 +60,14 @@ public class NoteActivity extends AppCompatActivity {
     } else {
       mNote = DataManager.getInstance().getNotes().get(position);
     }
+  }
+
+  private void saveOriginalNoteValues() {
+    if(mIsNewNote)
+      return;
+    mOriginalCourseId = mNote.getCourse().getCourseId();
+    mOriginalTitle = mNote.getTitle();
+    mOriginalText = mNote.getText();
   }
 
   private void displaySelectedNote(Spinner spinner, EditText textNoteTitle, EditText textNoteText) {
@@ -100,7 +111,9 @@ public class NoteActivity extends AppCompatActivity {
     if(mIsCanceling){
        if(mIsNewNote){
         DataManager.getInstance().removeNote(mNotePosition);
-      }
+      } else {
+         storePreviousNoteValues();
+       }
     } else {
         saveNote();
     }
@@ -130,5 +143,12 @@ public class NoteActivity extends AppCompatActivity {
     DataManager dm = DataManager.getInstance();
     mNotePosition = dm.createNewNote();
     mNote = dm.getNotes().get(mNotePosition);
+  }
+
+  private void storePreviousNoteValues() {
+    CourseInfo orginalCourseInfo = DataManager.getInstance().getCourse(mOriginalCourseId);
+    mNote.setCourse(orginalCourseInfo);
+    mNote.setTitle(mOriginalTitle);
+    mNote.setText(mOriginalText);
   }
 }
