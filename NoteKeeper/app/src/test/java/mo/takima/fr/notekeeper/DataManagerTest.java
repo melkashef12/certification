@@ -63,4 +63,18 @@ public class DataManagerTest {
     assertEquals(noteIndex2,foundIndex2);
 
   }
+
+  @Test public void createNewNoteOneStepCreation() {
+    final CourseInfo courseInfo = sDataManager.getCourse("android_async");
+    final String noteTitle = "Test note title";
+    final String noteText = "This is the body text of my test note";
+
+    int noteIndex = sDataManager.createNewNote(courseInfo,noteTitle,noteText);
+
+    NoteInfo compareNote = sDataManager.getNotes().get(noteIndex);
+    assertEquals(courseInfo,compareNote.getCourse());
+    assertEquals(noteTitle,compareNote.getTitle());
+    assertEquals(noteText,compareNote.getText());
+
+  }
 }
