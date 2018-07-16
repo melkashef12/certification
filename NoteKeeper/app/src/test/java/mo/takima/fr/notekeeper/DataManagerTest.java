@@ -2,6 +2,8 @@ package mo.takima.fr.notekeeper;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class DataManagerTest {
 
   @Test public void createNewNote() {
@@ -14,5 +16,11 @@ public class DataManagerTest {
     NoteInfo noteInfo = dm.getNotes().get(noteIndex);
     noteInfo.setCourse(courseInfo);
     noteInfo.setTitle(noteTitle);
+    noteInfo.setText(noteText);
+
+    NoteInfo compareNote = dm.getNotes().get(noteIndex);
+    assertEquals(courseInfo,compareNote.getCourse());
+    assertEquals(noteTitle,compareNote.getTitle());
+    assertEquals(noteText,compareNote.getText());
   }
 }
